@@ -8,6 +8,7 @@ In order to tell the user how much time he will need to wait, we need to calcula
 
 ### Patterns Candidates
 Builder - We can have an OrderBuilder that will return the time each item of the order takes to be prepared and add it to the receipt
+
 State - We will need a State to save the record of each Order with its time, so Order can rely on State to tell the number of the next order
 
 # poc-restaurant-bun
