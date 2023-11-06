@@ -1,5 +1,3 @@
-
-
 interface OrderItem {
   name: string
   timeToPrepare: number
@@ -12,6 +10,27 @@ interface Order {
   estimatedWaitingTime?: number
 }
 
+interface Dish {
+  name: string,
+  timeToPrepare: number
+}
+
+class Pizza implements Dish {
+  name = "PIZZA"
+  timeToPrepare = 10
+}
+class Hamburger implements Dish {
+  name = "HAMBURGER"
+  timeToPrepare = 5
+}
+class Burrito implements Dish {
+  name = "BURRITO"
+  timeToPrepare = 3
+}
+class Sushi implements Dish {
+  name = "SUSHI"
+  timeToPrepare = 8
+}
 
 class OrderBuilder {
   private order: Order = {}
@@ -47,30 +66,17 @@ class OrderBuilder {
 }
 
 class Restaurant {
-  private MENU: { [dish: string]: OrderItem } = {
-    PIZZA: {
-      name: "PIZZA",
-      timeToPrepare: 10
-    },
-    HAMBURGER: {
-      name: "HAMBURGER",
-      timeToPrepare: 5
-    },
-    BURRITO: {
-      name: "BURRITO",
-      timeToPrepare: 3
-    },
-    SUSHI: {
-      name: "SUSHI",
-      timeToPrepare: 8
-    },
-  }
-
+  private menu: Dish[]
   private orders: Order[]
   private currentTimeout: Timer | null = null
 
   constructor() {
     this.orders = []
+    this.buildMenu()
+  }
+
+  private buildMenu() {
+    this.menu = [new Pizza(), new Hamburger(), new Burrito(), new Sushi()]
   }
 
   private startTimer() {
@@ -120,11 +126,12 @@ class Restaurant {
   }
 
   getMenuItem(dish: string): OrderItem | null {
-    if (dish in this.MENU) {
-      return this.MENU[dish]
+    const dishItem = this.menu.find(item => item.name === dish)
+    if (!dishItem) {
+      console.log(`Dish ${dish} not found`)
+      return null
     }
-    console.log(`Dish ${dish} not found`)
-    return null
+    return dishItem
   }
 
   reportState() {
